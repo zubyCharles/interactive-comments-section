@@ -1,5 +1,5 @@
 import './App.scss';
-import CommentsList from './components/Comments';
+import CommentsList from './components/CommentsSection';
 
 function App() {
   return <CommentsList />;

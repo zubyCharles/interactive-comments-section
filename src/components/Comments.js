@@ -1,19 +1,10 @@
 import React, { useEffect, useReducer, useRef, useState } from 'react';
-import data from '../data/comments.json';
-import reducer from '../utils/reducer';
 import Reply from './Replies';
+import reducer from '../utils/reducer';
+import data from '../data/comments.json';
 import icons from '../icons';
 
 const { currentUser } = data;
-const { comments } = data;
-
-const CommentsList = () => (
-  <div className="">
-    {comments.map((comment) => (
-      <Comment commentObject={comment} />
-    ))}
-  </div>
-);
 
 //This returns the comments rendered by the comments section
 const Comment = ({ commentObject }) => {
@@ -22,6 +13,8 @@ const Comment = ({ commentObject }) => {
   const inputRef = useRef();
   const [showInput, setInput] = useState(false);
   const [replies, dispatch] = useReducer(reducer, commentObject.replies);
+  const [likesCount, setLikesCount] = useState(commentObject.score);
+  const [liked, setLiked] = useState(commentObject.liked);
 
   const sendReply = () => {
     if (inputRef.current.value.match(/^$/)) {
@@ -55,30 +48,58 @@ const Comment = ({ commentObject }) => {
         <div className="comment-body w-11/12 mx-auto">
           <p className="text-slate-700">{commentObject.content}</p>
         </div>
-        <div className="upvotes bg-slate-100 w-fit p-2 flex items-center mx-4 my-4 rounded-lg">
-          <span className="plus pr-4">
-            <img src={icons.Plus} alt="" />
-          </span>
-          <span className="score px-2">{commentObject.score}</span>
-          <span className="minus pl-4">
-            <img src={icons.Minus} alt="" />
-          </span>
-        </div>
-        <div
-          className="reply flex items-center absolute top-48 right-5 mt-2"
-          onClick={() => setInput(!showInput)}
-        >
-          <span className="icon px-1">
-            <img src={icons.Reply} alt="" />
-          </span>
-          <span className="text-indigo-900 font-semibold px-1">Reply</span>
+        <div className="bottom-btns flex px-4 py-6 justify-between">
+          <div className="upvotes bg-slate-100 w-fit p-2 flex items-center mx-0 my-0 rounded-lg">
+            <span
+              className="plus pr-4"
+              onClick={
+                liked
+                  ? null
+                  : () => {
+                      setLikesCount((likesCount) => likesCount + 1);
+                      setLiked(true);
+                    }
+              }
+            >
+              <img src={icons.Plus} alt="" />
+            </span>
+            <span
+              className={`score ${
+                liked ? 'text-indigo-900 font-extrabold' : null
+              } px-2`}
+            >
+              {likesCount}
+            </span>
+            <span
+              className="minus pl-4"
+              onClick={
+                liked
+                  ? () => {
+                      setLikesCount((likesCount) => likesCount - 1);
+                      setLiked(false);
+                    }
+                  : null
+              }
+            >
+              <img src={icons.Minus} alt="" />
+            </span>
+          </div>
+          <div
+            className="reply flex items-center top-0 right-0 mt-0"
+            onClick={() => setInput(!showInput)}
+          >
+            <span className="icon px-1">
+              <img src={icons.Reply} alt="" />
+            </span>
+            <span className="text-indigo-900 font-semibold px-1">Reply</span>
+          </div>
         </div>
         <div
           className={`${
             showInput ? 'block' : 'hidden'
           } input w-11/12 mt-8 mb-16 mx-auto`}
         >
-          <input
+          <textarea
             className="w-full pt-2 pb-8 px-4 border-2"
             ref={inputRef}
             type="text"
@@ -94,16 +115,11 @@ const Comment = ({ commentObject }) => {
 
       <div className="replies w-11/12 flex flex-col items-end pl-4 border-l-slate-300 border-l-2 mx-auto">
         {replies.map((reply, index) => (
-          <Reply
-            reply={reply}
-            index={index}
-            dispatch={dispatch}
-            commentObject={commentObject}
-          />
+          <Reply reply={reply} index={index} dispatch={dispatch} />
         ))}
       </div>
     </div>
   );
 };
 
-export default CommentsList;
+export default Comment;

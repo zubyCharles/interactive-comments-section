@@ -12,6 +12,8 @@ const Reply = ({ reply, dispatch, index }) => {
   const [showReplyInput, setReplyInput] = useState(false);
   const [showEditInput, setEditInput] = useState(false);
   const [showDeleteModal, setDeleteModal] = useState(false);
+  const [likesCount, setLikesCount] = useState(reply.score);
+  const [liked, setLiked] = useState(reply.liked);
 
   const sendReply = () => {
     if (replyInputRef.current.value.match(/^$/)) {
@@ -31,12 +33,13 @@ const Reply = ({ reply, dispatch, index }) => {
   };
 
   const updateReply = (index) => {
-    dispatch({ type: 'update', index, content: editInputRef.current.value });
+    dispatch({ type: 'update', content: editInputRef.current.value, index });
     setEditInput(!showEditInput);
   };
 
   const deleteReply = (index) => {
     dispatch({ type: 'delete', index });
+    setDeleteModal(false);
   };
 
   return (
@@ -64,11 +67,37 @@ const Reply = ({ reply, dispatch, index }) => {
       </p>
       <div className="bottom-btns w-full flex justify-between my-1 mt-6 mx-auto">
         <div className="upvotes bg-slate-100 w-fit p-2 flex items-center mx-0 mt-0 rounded-lg">
-          <span className="plus pr-3">
+          <span
+            className="plus pr-3"
+            onClick={
+              liked
+                ? null
+                : () => {
+                    setLikesCount((likesCount) => likesCount + 1);
+                    setLiked(true);
+                  }
+            }
+          >
             <img src={icons.Plus} alt="" />
           </span>
-          <span className="score px-1">{reply.score}</span>
-          <span className="minus pl-3">
+          <span
+            className={`score px-1 ${
+              liked ? 'text-indigo-900 font-extrabold' : null
+            }`}
+          >
+            {likesCount}
+          </span>
+          <span
+            className="minus pl-3"
+            onClick={
+              liked
+                ? () => {
+                    setLikesCount((likesCount) => likesCount - 1);
+                    setLiked(false);
+                  }
+                : null
+            }
+          >
             <img src={icons.Minus} alt="" />
           </span>
         </div>
@@ -103,20 +132,20 @@ const Reply = ({ reply, dispatch, index }) => {
             >
               <textarea
                 rows="3"
-                className="w-full min-h-10 bg-white text-xl pt-2 pb-8 px-4 mx-auto border-2 leading-8 rounded-lg outline-none"
+                className="w-full  bg-white text-xl pt-2 pb-8 px-4 mx-auto border-3 leading-8 rounded-lg outline-none"
                 ref={editInputRef}
                 defaultValue={reply.content}
                 type="text"
               />
               <button
                 onClick={() => setEditInput(!showEditInput)}
-                className="py-2 px-6 mt-3 mb-4 text-sm text-white bg-slate-500 rounded-md "
+                className="py-2 px-6 mt-3 mb-4 text-base font-medium text-white bg-slate-500 rounded-md "
               >
                 CANCEL
               </button>
               <button
                 onClick={() => updateReply(index)}
-                className="absolute right-0 py-2 px-6 mt-3 mb-4 text-sm text-white bg-indigo-900 rounded-md "
+                className="absolute right-0 py-2 px-6 mt-3 mb-4 text-base font-medium text-white bg-indigo-900 rounded-md "
               >
                 UPDATE
               </button>
@@ -146,7 +175,6 @@ const Reply = ({ reply, dispatch, index }) => {
                     className="text-white bg-red-500 text-lg font-bold py-3 px-6 rounded-lg"
                     onClick={() => {
                       deleteReply(index);
-                      setDeleteModal(false);
                     }}
                   >
                     YES, DELETE
@@ -169,12 +197,14 @@ const Reply = ({ reply, dispatch, index }) => {
           </div>
         )}
       </div>
+
+      {/**Input field for adding replies */}
       <div
         className={`reply-input ${
           showReplyInput ? 'block' : 'hidden'
         } input w-11/12 mt-8 mb-16 mx-auto`}
       >
-        <input
+        <textarea
           className="w-full pt-2 pb-8 px-4 border-2"
           ref={replyInputRef}
           type="text"
