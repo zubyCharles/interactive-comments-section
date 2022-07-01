@@ -37,9 +37,10 @@ export const commentReducer = (state, action) => {
           id: action.id,
           user: action.user,
           content: action.content,
-          replies: action.replies,
+          createdAt: action.createdAt,
           liked: action.liked,
           score: action.score,
+          replies: action.replies,
         },
       ];
     default:

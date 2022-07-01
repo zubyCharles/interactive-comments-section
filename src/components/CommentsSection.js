@@ -18,6 +18,7 @@ const CommentsList = () => {
       id: comments.length + 1,
       user: currentUser,
       content: commentInputRef.current.value,
+      createdAt: 'now',
       liked: false,
       score: 0,
       replies: [],

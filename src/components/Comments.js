@@ -43,6 +43,11 @@ const Comment = ({ commentObject }) => {
             <img className="w-8" src={user.image.png} alt="avatar" />
           </span>
           <span className="font-bold px-2">{user.username}</span>
+          {user.username === currentUser.username ? (
+            <span className="bg-indigo-900 text-white text-xs text-center self-center px-2 pb-1 rounded-sm">
+              you
+            </span>
+          ) : null}
           <span className="text-slate-700 px-2">{commentObject.createdAt}</span>
         </div>
         <div className="comment-body w-11/12 mx-auto">
