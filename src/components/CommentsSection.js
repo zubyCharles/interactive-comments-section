@@ -1,20 +1,20 @@
 import React, { useReducer, useRef } from 'react';
 import Comment from './Comments';
-import reducer from '../utils/reducer';
+import { commentReducer as reducer } from '../utils/reducer';
 import data from '../data/comments.json';
 
 const { currentUser } = data;
 
 const CommentsList = () => {
   const commentInputRef = useRef();
-  const [comments, dispatch] = useReducer(reducer, data.comments);
+  const [comments, Dispatch] = useReducer(reducer, data.comments);
 
   const addComment = () => {
     if (commentInputRef.current.value.match(/^$/)) {
       return;
     }
-    dispatch({
-      type: 'addNew',
+    Dispatch({
+      type: 'add',
       id: comments.length + 1,
       user: currentUser,
       content: commentInputRef.current.value,

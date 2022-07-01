@@ -2,20 +2,8 @@ import data from '../data/comments.json';
 
 const { currentUser } = data;
 
-const reducer = (state, action) => {
+export const replyReducer = (state, action) => {
   switch (action.type) {
-    case 'addNew':
-      return [
-        ...state,
-        {
-          id: action.id,
-          user: action.user,
-          content: action.content,
-          replies: action.replies,
-          liked: action.liked,
-          score: action.score,
-        },
-      ];
     case 'add':
       return [
         ...state,
@@ -40,4 +28,21 @@ const reducer = (state, action) => {
   }
 };
 
-export default reducer;
+export const commentReducer = (state, action) => {
+  switch (action.type) {
+    case 'add':
+      return [
+        ...state,
+        {
+          id: action.id,
+          user: action.user,
+          content: action.content,
+          replies: action.replies,
+          liked: action.liked,
+          score: action.score,
+        },
+      ];
+    default:
+      return state;
+  }
+};

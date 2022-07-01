@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer, useRef, useState } from 'react';
 import Reply from './Replies';
-import reducer from '../utils/reducer';
+import { replyReducer as reducer } from '../utils/reducer';
 import data from '../data/comments.json';
 import icons from '../icons';
 

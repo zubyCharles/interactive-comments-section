@@ -166,13 +166,13 @@ const Reply = ({ reply, dispatch, index }) => {
                 </p>
                 <div className="buttons w-full flex justify-between">
                   <button
-                    className="text-white bg-slate-500 text-lg font-bold py-3 px-6 rounded-lg"
+                    className="text-white bg-slate-500 text-base font-bold py-3 px-6 rounded-lg"
                     onClick={() => setDeleteModal(false)}
                   >
                     NO, CANCEL
                   </button>
                   <button
-                    className="text-white bg-red-500 text-lg font-bold py-3 px-6 rounded-lg"
+                    className="text-white bg-red-500 text-base font-bold py-3 px-6 rounded-lg"
                     onClick={() => {
                       deleteReply(index);
                     }}
