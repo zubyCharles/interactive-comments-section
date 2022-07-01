@@ -1,4 +1,4 @@
-import React, { useReducer, useRef, useState } from 'react';
+import React, { useReducer, useRef } from 'react';
 import Comment from './Comments';
 import reducer from '../utils/reducer';
 import data from '../data/comments.json';
@@ -37,7 +37,6 @@ const CommentsList = () => {
           className="w-full pt-2 pb-8 px-4 border-2 rounded"
           ref={commentInputRef}
           type="text"
-          defaultValue={'Yooo'}
           placeholder="Add a comment..."
         />
         <button
