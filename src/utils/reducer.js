@@ -8,6 +8,7 @@ export const replyReducer = (state, action) => {
       return [
         ...state,
         {
+          id: action.id,
           username: action.username,
           content: action.content,
           liked: action.liked,

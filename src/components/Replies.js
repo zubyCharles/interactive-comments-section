@@ -1,6 +1,10 @@
 import React, { useRef, useState } from 'react';
 import icons from '../icons';
 import data from '../data/comments.json';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+dayjs.extend(relativeTime);
+dayjs().format();
 
 const { currentUser } = data;
 
@@ -49,7 +53,7 @@ const Reply = ({ reply, dispatch, index }) => {
           showDeleteModal || showEditInput ? 'block' : 'hidden'
         } fixed z-40 w-screen h-screen top-0 left-0 bg-slate-800 opacity-30`}
       ></div>
-      <div className="header p-2 pl-0 flex flex-row content-center">
+      <div className="header p-2 pr-0 pl-0 flex flex-row content-center">
         <span className="pr-2">
           <img className="w-8" src={reply.user.image.png} alt="avatar" />
         </span>
@@ -59,7 +63,9 @@ const Reply = ({ reply, dispatch, index }) => {
             you
           </span>
         ) : null}
-        <span className="text-slate-600 px-2 self-center">{`now`}</span>
+        <span className="text-slate-600 text-sm px-2 self-center">
+          {dayjs().fromNow()}
+        </span>
       </div>
       <p className="text-slate-600">
         <span className="text-indigo-900 font-semibold">{`@${reply.replyingTo}`}</span>{' '}
@@ -131,6 +137,7 @@ const Reply = ({ reply, dispatch, index }) => {
               } z-50 top-1/3 left-4 w-11/12 my-0`}
             >
               <textarea
+                key={reply.id}
                 rows="3"
                 className="w-full  bg-white text-xl pt-2 pb-8 px-4 mx-auto border-3 leading-8 rounded-lg outline-none"
                 ref={editInputRef}
@@ -154,7 +161,7 @@ const Reply = ({ reply, dispatch, index }) => {
             <div
               className={`delete-modal ${
                 showDeleteModal ? 'block' : 'hidden'
-              } bg-white fixed z-50 top-1/4 left-4 w-11/12 my-0 rounded-lg`}
+              } bg-white fixed z-50 top-1/4 left-4 lg:left-1/3 w-11/12 lg:w-3/12 my-0 rounded-lg`}
             >
               <div className="modal-inner p-4 pt-8">
                 <h1 className="text-2xl font-semibold text-slate-700">

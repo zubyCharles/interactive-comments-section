@@ -22,6 +22,7 @@ const Comment = ({ commentObject }) => {
     }
     dispatch({
       type: 'add',
+      id: replies.length + 1,
       username: currentUser.username,
       content: inputRef.current.value,
       liked: false,
@@ -33,7 +34,21 @@ const Comment = ({ commentObject }) => {
     setInput(!showInput);
   };
 
-  useEffect(() => console.log(replies), [replies, dispatch]);
+  /*
+  useEffect(() => {
+    const likes = JSON.parse(localStorage.getItem('likes'));
+    if (likes) {
+      setLikesCount(likes);
+    }
+  }, []);
+  */
+
+  /*
+  useEffect(() => {
+    localStorage.setItem('likes', JSON.stringify(likesCount));
+  }, [likesCount]);*/
+
+  //useEffect(() => console.log(replies), [replies, dispatch]);
 
   return (
     <div>
@@ -63,6 +78,7 @@ const Comment = ({ commentObject }) => {
                   : () => {
                       setLikesCount((likesCount) => likesCount + 1);
                       setLiked(true);
+                      localStorage.setItem('likes', JSON.stringify(likesCount));
                     }
               }
             >
@@ -82,6 +98,7 @@ const Comment = ({ commentObject }) => {
                   ? () => {
                       setLikesCount((likesCount) => likesCount - 1);
                       setLiked(false);
+                      localStorage.setItem('likes', JSON.stringify(likesCount));
                     }
                   : null
               }
@@ -90,7 +107,7 @@ const Comment = ({ commentObject }) => {
             </span>
           </div>
           <div
-            className="reply flex items-center top-0 right-0 mt-0"
+            className="reply flex items-center top-0 right-0 mt-0 cursor-pointer"
             onClick={() => setInput(!showInput)}
           >
             <span className="icon px-1">
@@ -111,7 +128,7 @@ const Comment = ({ commentObject }) => {
           />
           <button
             onClick={sendReply}
-            className="py-2 px-6 mt-3 mb-4 text-sm text-white bg-indigo-900 rounded-md float-right"
+            className="py-2 px-6 mt-3 mb-4 text-sm text-white bg-indigo-900 rounded-md float-right hover:opacity-50"
           >
             SEND
           </button>
@@ -120,7 +137,12 @@ const Comment = ({ commentObject }) => {
 
       <div className="replies w-11/12 flex flex-col items-end pl-4 border-l-slate-300 border-l-2 mx-auto">
         {replies.map((reply, index) => (
-          <Reply reply={reply} index={index} dispatch={dispatch} />
+          <Reply
+            key={reply.id}
+            reply={reply}
+            index={index}
+            dispatch={dispatch}
+          />
         ))}
       </div>
     </div>

@@ -27,7 +27,7 @@ const CommentsList = () => {
   };
 
   return (
-    <main>
+    <main className="lg:w-9/12 lg:my-0 lg:mx-auto">
       <div className="">
         {comments.map((comment) => (
           <Comment commentObject={comment} />
