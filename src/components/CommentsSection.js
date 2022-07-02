@@ -1,6 +1,6 @@
 import React, { useReducer, useRef } from 'react';
-import Comment from './Comments';
 import { commentReducer as reducer } from '../utils/reducer';
+import Comment from './Comments';
 import data from '../data/comments.json';
 
 const { currentUser } = data;
