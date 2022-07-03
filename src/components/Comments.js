@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useRef, useState } from 'react';
+import React, { useReducer, useRef, useState } from 'react';
 import Reply from './Replies';
 import { replyReducer as reducer } from '../utils/reducer';
 import data from '../data/comments.json';
