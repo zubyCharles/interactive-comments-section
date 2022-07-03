@@ -128,7 +128,7 @@ const Comment = ({ commentObject }) => {
           />
           <button
             onClick={sendReply}
-            className="py-2 px-6 mt-3 mb-4 text-sm text-white bg-indigo-900 rounded-md float-right hover:opacity-50"
+            className="py-2 px-6 mt-3 mb-4 text-sm text-white bg-indigo-900 rounded-md float-right hover:opacity-80"
           >
             SEND
           </button>

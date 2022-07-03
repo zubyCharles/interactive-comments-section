@@ -37,6 +37,9 @@ const Reply = ({ reply, dispatch, index }) => {
   };
 
   const updateReply = (index) => {
+    if (editInputRef.current.value.match(/^$/)) {
+      return;
+    }
     dispatch({ type: 'update', content: editInputRef.current.value, index });
     setEditInput(!showEditInput);
   };
@@ -134,7 +137,7 @@ const Reply = ({ reply, dispatch, index }) => {
             <div
               className={`edit-input fixed ${
                 showEditInput ? 'block' : 'hidden'
-              } z-50 top-1/3 left-4 w-11/12 my-0`}
+              } z-50 top-1/3 left-4 w-11/12 my-0 lg:w-4/12 lg:left-1/3`}
             >
               <textarea
                 key={reply.id}
@@ -145,14 +148,17 @@ const Reply = ({ reply, dispatch, index }) => {
                 type="text"
               />
               <button
-                onClick={() => setEditInput(!showEditInput)}
-                className="py-2 px-6 mt-3 mb-4 text-base font-medium text-white bg-slate-500 rounded-md "
+                onClick={() => {
+                  setEditInput(!showEditInput);
+                  editInputRef.defaultValue = reply.content;
+                }}
+                className="py-2 px-6 mt-3 mb-4 text-base font-medium text-white bg-slate-500 rounded-md hover:opacity-80"
               >
                 CANCEL
               </button>
               <button
                 onClick={() => updateReply(index)}
-                className="absolute right-0 py-2 px-6 mt-3 mb-4 text-base font-medium text-white bg-indigo-900 rounded-md "
+                className="absolute right-0 py-2 px-6 mt-3 mb-4 text-base font-medium text-white bg-indigo-900 rounded-md hover:opacity-80"
               >
                 UPDATE
               </button>
@@ -161,7 +167,7 @@ const Reply = ({ reply, dispatch, index }) => {
             <div
               className={`delete-modal ${
                 showDeleteModal ? 'block' : 'hidden'
-              } bg-white fixed z-50 top-1/4 left-4 lg:left-1/3 w-11/12 lg:w-3/12 my-0 rounded-lg`}
+              } bg-white fixed z-50 top-1/4 left-4 lg:left-1/3 lg:translate-x-20 w-11/12 lg:w-3/12 my-0 rounded-lg`}
             >
               <div className="modal-inner p-4 pt-8">
                 <h1 className="text-2xl font-semibold text-slate-700">
@@ -173,13 +179,13 @@ const Reply = ({ reply, dispatch, index }) => {
                 </p>
                 <div className="buttons w-full flex justify-between">
                   <button
-                    className="text-white bg-slate-500 text-base font-bold py-3 px-6 rounded-lg"
+                    className="text-white bg-slate-500 text-base font-bold py-3 px-6 rounded-lg hover:opacity-80"
                     onClick={() => setDeleteModal(false)}
                   >
                     NO, CANCEL
                   </button>
                   <button
-                    className="text-white bg-red-500 text-base font-bold py-3 px-6 rounded-lg"
+                    className="text-white bg-red-500 text-base font-bold py-3 px-6 rounded-lg hover:opacity-80"
                     onClick={() => {
                       deleteReply(index);
                     }}
@@ -218,7 +224,7 @@ const Reply = ({ reply, dispatch, index }) => {
         />
         <button
           onClick={sendReply}
-          className="py-2 px-6 mt-3 mb-4 text-sm text-white bg-indigo-900 rounded-md float-right"
+          className="py-2 px-6 mt-3 mb-4 text-sm text-white bg-indigo-900 rounded-md float-right hover:opacity-80"
         >
           SEND
         </button>
