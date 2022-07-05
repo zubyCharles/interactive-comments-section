@@ -145,7 +145,6 @@ const Reply = ({ reply, dispatch, index }) => {
                 className="w-full  bg-white text-xl pt-2 pb-8 px-4 mx-auto border-3 leading-8 rounded-lg outline-none"
                 ref={editInputRef}
                 defaultValue={reply.content}
-                type="text"
               />
               <button
                 onClick={() => {
@@ -220,7 +219,6 @@ const Reply = ({ reply, dispatch, index }) => {
         <textarea
           className="w-full pt-2 pb-8 px-4 border-2"
           ref={replyInputRef}
-          type="text"
         />
         <button
           onClick={sendReply}

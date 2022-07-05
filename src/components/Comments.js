@@ -121,11 +121,7 @@ const Comment = ({ commentObject }) => {
             showInput ? 'block' : 'hidden'
           } input w-11/12 mt-8 mb-16 mx-auto`}
         >
-          <textarea
-            className="w-full pt-2 pb-8 px-4 border-2"
-            ref={inputRef}
-            type="text"
-          />
+          <textarea className="w-full pt-2 pb-8 px-4 border-2" ref={inputRef} />
           <button
             onClick={sendReply}
             className="py-2 px-6 mt-3 mb-4 text-sm text-white bg-indigo-900 rounded-md float-right hover:opacity-80"
@@ -135,7 +131,7 @@ const Comment = ({ commentObject }) => {
         </div>
       </div>
 
-      <div className="replies w-11/12 flex flex-col items-end pl-4 border-l-slate-300 border-l-2 mx-auto">
+      <div className="replies w-11/12 flex flex-col items-end pl-4 lg:pl-20 border-l-slate-300 border-l-2 mx-auto">
         {replies.map((reply, index) => (
           <Reply
             key={reply.id}
