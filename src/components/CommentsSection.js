@@ -40,7 +40,7 @@ const CommentsList = () => {
           <img src="images/image-juliusomo.png" alt="user avatar" />
         </div>
         <textarea
-          className="w-full lg:max-w-[80%] lg:translate-x-12 pt-2 pb-8 px-4 border-2 rounded-lg"
+          className="w-full lg:max-w-[75%] lg:translate-x-12 pt-2 pb-8 px-4 border-2 rounded-lg"
           ref={commentInputRef}
           placeholder="Add a comment..."
         />
