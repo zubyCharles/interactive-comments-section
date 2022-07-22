@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import icons from '../icons';
 import data from '../data/comments.json';
 import dayjs from 'dayjs';
