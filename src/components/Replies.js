@@ -1,8 +1,9 @@
-import React, { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import icons from '../icons';
 import data from '../data/comments.json';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+
 dayjs.extend(relativeTime);
 dayjs().format();
 
@@ -48,6 +49,17 @@ const Reply = ({ reply, dispatch, index }) => {
     dispatch({ type: 'delete', index });
     setDeleteModal(false);
   };
+
+  // useEffect(() => {
+  //   const liked = JSON.parse(localStorage.getItem('liked_reply'));
+  //   if (liked) {
+  //     setLiked(liked);
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   localStorage.setItem('liked_reply', JSON.stringify(liked));
+  // }, [liked]);
 
   return (
     <div key={reply.id} className="reply bg-white w-full p-4 my-1 rounded-lg">

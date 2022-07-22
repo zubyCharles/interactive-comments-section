@@ -1,4 +1,4 @@
-import React, { useReducer, useRef, useState } from 'react';
+import { useEffect, useReducer, useRef, useState } from 'react';
 import Reply from './Replies';
 import { replyReducer as reducer } from '../utils/reducer';
 import data from '../data/comments.json';
@@ -12,9 +12,30 @@ const Comment = ({ commentObject }) => {
 
   const inputRef = useRef();
   const [showInput, setInput] = useState(false);
-  const [replies, dispatch] = useReducer(reducer, commentObject.replies);
-  const [likesCount, setLikesCount] = useState(commentObject.score);
+
+  const [repliesArray] = useState(() => {
+    let Replies = JSON.parse(
+      localStorage.getItem(`replies_${commentObject.id}`)
+    );
+    if (Replies && Array.isArray(Replies)) {
+      return Replies;
+    }
+    return commentObject.replies;
+  });
+
+  const [replies, dispatch] = useReducer(reducer, repliesArray);
+
+  const [likesCount, setLikesCount] = useState(() => {
+    const likes = JSON.parse(localStorage.getItem(`likes_${commentObject.id}`));
+    if (likes) {
+      return likes;
+    }
+    return commentObject.score;
+  });
+
   const [liked, setLiked] = useState(commentObject.liked);
+
+  const LIKED_STORAGE_ID = `${commentObject.id}_liked`;
 
   const sendReply = () => {
     if (inputRef.current.value.match(/^$/)) {
@@ -34,21 +55,30 @@ const Comment = ({ commentObject }) => {
     setInput(!showInput);
   };
 
-  /*
   useEffect(() => {
-    const likes = JSON.parse(localStorage.getItem('likes'));
-    if (likes) {
-      setLikesCount(likes);
+    localStorage.setItem(
+      `likes_${commentObject.id}`,
+      JSON.stringify(likesCount)
+    );
+  }, [likesCount, user.username]);
+
+  useEffect(() => {
+    const liked = JSON.parse(localStorage.getItem(LIKED_STORAGE_ID));
+    if (liked) {
+      setLiked(liked);
     }
-  }, []);
-  */
+  }, [LIKED_STORAGE_ID]);
 
-  /*
   useEffect(() => {
-    localStorage.setItem('likes', JSON.stringify(likesCount));
-  }, [likesCount]);*/
+    localStorage.setItem(LIKED_STORAGE_ID, JSON.stringify(liked));
+  }, [liked, LIKED_STORAGE_ID]);
 
-  //useEffect(() => console.log(replies), [replies, dispatch]);
+  useEffect(() => {
+    localStorage.setItem(
+      `replies_${commentObject.id}`,
+      JSON.stringify(replies)
+    );
+  }, [replies, commentObject]);
 
   return (
     <div>
@@ -78,7 +108,6 @@ const Comment = ({ commentObject }) => {
                   : () => {
                       setLikesCount((likesCount) => likesCount + 1);
                       setLiked(true);
-                      localStorage.setItem('likes', JSON.stringify(likesCount));
                     }
               }
             >
@@ -98,7 +127,6 @@ const Comment = ({ commentObject }) => {
                   ? () => {
                       setLikesCount((likesCount) => likesCount - 1);
                       setLiked(false);
-                      localStorage.setItem('likes', JSON.stringify(likesCount));
                     }
                   : null
               }

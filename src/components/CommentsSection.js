@@ -1,4 +1,4 @@
-import React, { useReducer, useRef } from 'react';
+import { useEffect, useReducer, useRef, useState } from 'react';
 import { commentReducer as reducer } from '../utils/reducer';
 import Comment from './Comments';
 import data from '../data/comments.json';
@@ -7,7 +7,16 @@ const { currentUser } = data;
 
 const CommentsList = () => {
   const commentInputRef = useRef();
-  const [comments, Dispatch] = useReducer(reducer, data.comments);
+
+  const [commentsArray] = useState(() => {
+    let Comments = JSON.parse(localStorage.getItem('comments'));
+    if (Comments && Array.isArray(Comments)) {
+      return Comments;
+    }
+    return data.comments;
+  });
+
+  const [comments, Dispatch] = useReducer(reducer, commentsArray);
 
   const addComment = () => {
     if (commentInputRef.current.value.match(/^$/)) {
@@ -26,11 +35,15 @@ const CommentsList = () => {
     commentInputRef.current.value = '';
   };
 
+  useEffect(() => {
+    localStorage.setItem('comments', JSON.stringify(comments));
+  }, [comments]);
+
   return (
     <main className="w-full lg:w-6/12 lg:my-0 lg:mx-auto">
       <div className="">
         {comments.map((comment) => (
-          <Comment commentObject={comment} />
+          <Comment commentObject={comment} key={comment.id} />
         ))}
       </div>
       <div
