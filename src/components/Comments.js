@@ -60,7 +60,7 @@ const Comment = ({ commentObject }) => {
       `likes_${commentObject.id}`,
       JSON.stringify(likesCount)
     );
-  }, [likesCount, user.username]);
+  }, [likesCount, commentObject.id]);
 
   useEffect(() => {
     const liked = JSON.parse(localStorage.getItem(LIKED_STORAGE_ID));
